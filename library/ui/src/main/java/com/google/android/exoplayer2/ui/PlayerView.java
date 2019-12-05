@@ -29,6 +29,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Looper;
 import androidx.annotation.IntDef;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
@@ -308,6 +309,10 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
   private static final int PICTURE_TYPE_FRONT_COVER = 3;
   private static final int PICTURE_TYPE_NOT_SET = -1;
 
+  public PlayerView(Context context, @LayoutRes int customControllerLayout) {
+    this(context, customControllerLayout,null);
+  }
+
   public PlayerView(Context context) {
     this(context, null);
   }
@@ -316,7 +321,15 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
     this(context, attrs, 0);
   }
 
+  public PlayerView(Context context, @LayoutRes int customControllerLayout, AttributeSet attrs) {
+    this(context, attrs, 0, customControllerLayout);
+  }
+
   public PlayerView(Context context, AttributeSet attrs, int defStyleAttr) {
+    this(context, attrs, defStyleAttr,-1);
+  }
+
+  public PlayerView(Context context, AttributeSet attrs, int defStyleAttr,@LayoutRes int customControllerLayout) {
     super(context, attrs, defStyleAttr);
 
     if (isInEditMode()) {
@@ -458,12 +471,12 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
     // Playback control view.
     PlayerControlView customController = findViewById(R.id.exo_controller);
     View controllerPlaceholder = findViewById(R.id.exo_controller_placeholder);
-    if (customController != null) {
+    if (customController != null && customControllerLayout ==-1) {
       this.controller = customController;
     } else if (controllerPlaceholder != null) {
       // Propagate attrs as playbackAttrs so that PlayerControlView's custom attributes are
       // transferred, but standard attributes (e.g. background) are not.
-      this.controller = new PlayerControlView(context, null, 0, attrs);
+      this.controller = new PlayerControlView(context, null, 0, attrs,customControllerLayout);
       controller.setId(R.id.exo_controller);
       controller.setLayoutParams(controllerPlaceholder.getLayoutParams());
       ViewGroup parent = ((ViewGroup) controllerPlaceholder.getParent());

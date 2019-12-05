@@ -22,6 +22,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Looper;
 import android.os.SystemClock;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
@@ -301,8 +302,15 @@ public class PlayerControlView extends FrameLayout {
   public PlayerControlView(
       Context context,
       @Nullable AttributeSet attrs,
+      int defStyleAttr,@Nullable AttributeSet playbackAttrs){
+    this(context,attrs,defStyleAttr,playbackAttrs,-1);
+  }
+
+  public PlayerControlView(
+      Context context,
+      @Nullable AttributeSet attrs,
       int defStyleAttr,
-      @Nullable AttributeSet playbackAttrs) {
+      @Nullable AttributeSet playbackAttrs,@LayoutRes int customControllerLayout) {
     super(context, attrs, defStyleAttr);
     int controllerLayoutId = R.layout.exo_player_control_view;
     rewindMs = DEFAULT_REWIND_MS;
@@ -322,7 +330,7 @@ public class PlayerControlView extends FrameLayout {
         fastForwardMs =
             a.getInt(R.styleable.PlayerControlView_fastforward_increment, fastForwardMs);
         showTimeoutMs = a.getInt(R.styleable.PlayerControlView_show_timeout, showTimeoutMs);
-        controllerLayoutId =
+        controllerLayoutId = customControllerLayout !=-1 ? customControllerLayout :
             a.getResourceId(R.styleable.PlayerControlView_controller_layout_id, controllerLayoutId);
         repeatToggleModes = getRepeatToggleModes(a, repeatToggleModes);
         showShuffleButton =
