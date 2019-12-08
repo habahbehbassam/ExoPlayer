@@ -45,6 +45,9 @@ import java.io.IOException;
  */
 public class DemoApplication extends Application {
 
+
+
+
   private static final String TAG = "DemoApplication";
   private static final String DOWNLOAD_ACTION_FILE = "actions";
   private static final String DOWNLOAD_TRACKER_ACTION_FILE = "tracked_actions";
